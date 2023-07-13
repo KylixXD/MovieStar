@@ -20,7 +20,7 @@
                     </form>
                 </div>
                 <div class="col-md-4" id="register-container">
-                    <h2>Cadastrar-se</h2>
+                    <h2>Cadastrar</h2>
                     <form action="" method="POST">
                         <input type="hidden" name="type" value="register">
                         <div class="form-group">
