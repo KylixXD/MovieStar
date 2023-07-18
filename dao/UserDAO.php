@@ -71,7 +71,7 @@
             $stmt->execute();
 
             if($redirect){
-                $this->message->setMessage("Dados atualizados com sucesso", "success","index.php");
+                $this->message->setMessage("Dados atualizados com sucesso", "success","editprofile.php");
             }
             
 
@@ -191,7 +191,14 @@
         }
 
         public function changePassword(User $user){
+            $stmt = $this->conn->prepare("UPDATE users SET password = :password WHERE id = :id");
 
+            $stmt->bindParam(":password", $user->password);
+            $stmt->bindParam(":id", $user->id);
+
+            $stmt->execute();
+
+            $this->message->setMessage("A senha foi alterada com sucesso!", "success", "editprofile.php");
         }
 
     }

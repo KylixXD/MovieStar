@@ -62,7 +62,7 @@
         $password = filter_input(INPUT_POST, "password");
 
         if($userDAO->authenticateUser($email,$password)){
-            $message->setMessage("Seja bem-vindo!", "success","editprofile.php");
+            $message->setMessage("Seja bem-vindo!", "success","index.php");
         }else{
             $message->setMessage("Usuário e/ou senha incorretos.", "error","back");
         }
