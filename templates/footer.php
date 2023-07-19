@@ -14,9 +14,12 @@
         </div>
         <div id="footer-links-container">
             <ul>
-                <li><a href="#">Adicionar filme</a></li>
-                <li><a href="#">Adicionar crítica</a></li>
-                <li><a href="<?= $BASE_URL ?>auth.php">Entrar / Cadastrar-se</a></li>
+                <?php if($userData): ?>
+                    <li><a href="#">Adicionar filme</a></li>
+                    <li><a href="#">Adicionar crítica</a></li>
+                <?php else:?>
+                    <li><a href="<?= $BASE_URL ?>auth.php">Entrar / Cadastrar-se</a></li>
+                <?php endif;?>
             </ul>
         </div>
         <p>&copy; 2023 GDZ INC</p>

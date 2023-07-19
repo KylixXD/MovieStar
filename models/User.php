@@ -32,6 +32,7 @@
         public function buildUser($data);
         public function create(User $user,$authUser = false); //Criar o usuário
         public function update(User $user,$redirect = true); // Atualizar o usuário 
+        // public function validPassword(User $user);
         public function verifyToken($protected = false);  
         public function setTokenToSession($token , $redirect = true); // "Dar token para as sessões" i think
         public function authenticateUser($email , $password); //Autenticação de usuário //Esse metodo e o de cima coompoe a autenticação completa

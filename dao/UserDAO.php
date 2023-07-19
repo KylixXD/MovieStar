@@ -77,6 +77,13 @@
 
         }
 
+        // public function validPassword(User $user){
+        //     return preg_match('/[a-z]/', $user->password) // tem pelo menos uma letra minúscula
+        //     && preg_match('/[A-Z]/', $user->password) // tem pelo menos uma letra maiúscula
+        //     && preg_match('/[0-9]/', $user->password) // tem pelo menos um número
+        //     && preg_match('/^[\w$@]{6,}$/', $user->password); // tem 6 ou mais caracteres  
+        // }
+
         public function verifyToken($protected = false){
 
             if(!empty($_SESSION["token"])){
