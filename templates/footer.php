@@ -15,7 +15,7 @@
         <div id="footer-links-container">
             <ul>
                 <?php if($userData): ?>
-                    <li><a href="#">Adicionar filme</a></li>
+                    <li><a href="<?= $BASE_URL ?>newmovie.php">Adicionar filme</a></li>
                     <li><a href="#">Adicionar crítica</a></li>
                 <?php else:?>
                     <li><a href="<?= $BASE_URL ?>auth.php">Entrar / Cadastrar-se</a></li>

@@ -9,6 +9,11 @@
     $message = new Message($BASE_URL);
     $userDao = new UserDAO($conn, $BASE_URL);
 
+    //tratar erros
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+
     //Resgata o tipo do formulário
     $type = filter_input(INPUT_POST, "type");
 
@@ -31,44 +36,45 @@
         $userData->email = $email;
         $userData->bio = $bio;
 
-        
-    // Upload da imagem
-    if(isset($_FILES["image"]) && !empty($_FILES["image"]["tmp_name"])) {
+          // Upload da imagem
+        if(isset($_FILES["image"]) && !empty($_FILES["image"]["tmp_name"])) {
+          
+            $image = $_FILES["image"];
+            $imageTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif" , "image/bmp"];
+            $jpgArray = ["image/jpeg", "image/jpg"];
       
-        $image = $_FILES["image"];
-        $imageTypes = ["image/jpeg", "image/jpg", "image/png"];
-        $jpgArray = ["image/jpeg", "image/jpg"];
-  
-        // Checagem de tipo de imagem
-        if(in_array($image["type"], $imageTypes)) {
-  
-          // Checar se jpg
-          if(in_array($image, $jpgArray)) {
-  
-            $imageFile = imagecreatefromjpeg($image["tmp_name"]);
-  
-          // Imagem é png
-          } else {
-  
-            $imageFile = imagecreatefrompng($image["tmp_name"]);
-  
+            //PEGANDO EXTENSÃO DO ARQUIVO
+            $ext = strtolower(substr($image['name'],-4));
+     
+            // Checagem de tipo de imagem
+            if(in_array($image["type"], $imageTypes)) {
+      
+              if($ext == ".jpg") {
+      
+                $imageFile = imagecreatefromjpeg($image["tmp_name"]);
+      
+              } else if($ext == ".png") {
+      
+                $imageFile = imagecreatefrompng($image["tmp_name"]);
+      
+              } else {
+     
+                $message->setMessage("Tipo inválido de imagem, insira png ou jpg!", "error", "back");
+     
+              }
+      
+              $imageName = $user->imageGenerateName($ext);
+              imagejpeg($imageFile, "./img/users/" . $imageName, 100);
+              $userData->image = $imageName;
+      
+            } else {
+      
+              $message->setMessage("Tipo inválido de imagem, insira png ou jpg!", "error", "back");
+      
+            }
           }
-  
-          $imageName = $user->imageGenerateName();
-  
-          imagejpeg($imageFile, "./img/users/" . $imageName, 100);
-  
-          $userData->image = $imageName;
-  
-        } else {
-  
-          $message->setMessage("Tipo inválido de imagem, insira png ou jpg!", "error", "back");
-  
-        }
-  
-      }
-  
-      $userDao->update($userData);
+     
+        $userDao->update($userData);
 
     } else if ($type === "changepassword") {
         $password = filter_input(INPUT_POST, "password");

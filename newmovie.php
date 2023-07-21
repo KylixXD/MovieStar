@@ -30,7 +30,8 @@
                     <label for="category">Categoria:</label>
                     <select name="category" id="category" class="form-control">
                         <option value="">Selecione</option>
-                        <option value="Ação/Aventura">Ação/Aventura</option>
+                        <option value="Ação">Ação</option>
+                        <option value="Aventura">Aventura</option>
                         <option value="Suspense">Suspense</option>
                         <option value="Terror">Terror</option>
                         <option value="Romance">Romance</option>

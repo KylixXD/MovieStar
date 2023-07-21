@@ -229,7 +229,7 @@
     margin-top: 30px;
 }
 
-.edit-profile-page .card-btn {
+.edit-profile-page .card-btn, #add-movie-container .card-btn{
     width: auto;
 }
 
@@ -258,6 +258,37 @@
     margin: 0 auto;
     padding-top: 7px;
 }
+
+/*  Dashboard */
+
+#add-movie-container {
+    text-align: right;
+}
+
+#movies-dashboard .table {
+    color: #FFF;
+}
+
+#movies-dashboard .table th {
+    border-top: none;
+}
+
+#movies-dashboard .table tr {
+    padding: 15px 0;
+}
+
+.table-movie-title {
+    color:#FFF;
+    font-weight: bold;
+    transition: .5s;
+}
+
+.table-movie-title:hover {
+    color: #F5C518;
+}
+
+
+
 
 /* Footer */
 
