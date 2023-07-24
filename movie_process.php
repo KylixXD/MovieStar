@@ -36,34 +36,6 @@
             $movie->length = $length;
             $movie->users_id = $userData->id;
 
-            // //Upload de imagem (Será que vai funcionar?)
-            // if(isset($_FILES["image"]) && !empty($_FILES["image"]["tmp_name"])){
-            //     $image = $_FILES["image"];
-            //     $imageTypes = ["image/jpeg", "image/jpg", "image/png"];
-            //     $jpgArray = ["image/jpeg", "image/jpg"];
-                
-            //     //Checando tipo da imagem
-            //     if(in_array($image["type"], $imageTypes)){
-            //         //Checa se imagem é jpg
-            //         if(in_array($image["type"], $jpgArray)){
-            //             $imageFile = imagecreatefromjpeg($image["tmp_name"]);
-            //         }else{
-            //             $imageFile = imagecreatefrompng($image["tmp_name"]);
-            //         }
-
-            //         $imageName = $movie->imageGenerateName();
-
-            //         imagejpeg($imageFile, "./img/movies/" . $imageName, 100);
-
-            //         $movie->image = $imageName;
-
-            //     } else {
-            //         $message->setMessage("Tipo inválido de imagem, insira png ou jpg!", "error", "back");
-            //     }
-
-            // } 
-            // $movieDao->create($movie);
-
             // Upload da imagem
                 if(isset($_FILES["image"]) && !empty($_FILES["image"]["tmp_name"])) {
                 
@@ -108,8 +80,25 @@
             $message->setMessage("Você precisa adicionar pelo menos:Título,descrição e categoria", "error", "back"); 
         }
 
+    } else if($type === "delete"){
+        //Receber os dados do form
+        $id = filter_input(INPUT_POST, "id");
+        $movie = $movieDao->findById($id);
 
-    } else {
+        if($movie){
+            //Verificar se o filme é do usuário
+            if($movie->users_id === $userData->id){
+                $movieDao->destroy($movie->id);
+                
+            } else {
+                $message->setMessage("Informações inválidas!", "error", "index.php");
+            }
+
+        } else {
+            $message->setMessage("Informações inválidas!", "error", "index.php");
+        }
+
+    }else {
         $message->setMessage("Informações inválidas!", "error", "index.php");
     }
 
