@@ -1,25 +1,30 @@
 <?php
-require_once("templates/header.php");
-require_once("models/User.php");
-require_once("dao/UserDAO.php");
-require_once("dao/MovieDAO.php");
+    require_once("templates/header.php");
+    require_once("models/User.php");
+    require_once("dao/UserDAO.php");
+    require_once("dao/MovieDAO.php");
 
-$user = new User();
-$userDao = new UserDAO($conn, $BASE_URL);
-$movieDao = new MovieDAO($conn, $BASE_URL);
+    $user = new User();
+    $userDao = new UserDAO($conn, $BASE_URL);
+    $movieDao = new MovieDAO($conn, $BASE_URL);
 
-$userData = $userDao->verifyToken(true);
-$id = filter_input(INPUT_GET, "id");
+    $userData = $userDao->verifyToken(true);
+    $id = filter_input(INPUT_GET, "id");
 
-if (empty($id)) {
-    $message->setMessage("O filme não foi encontrado!", "error", "index.php");
-} else {
-    $movie = $movieDao->findById($id);
-    //Verifica se o filme existe
-    if (!$movie) {
+    if (empty($id)) {
         $message->setMessage("O filme não foi encontrado!", "error", "index.php");
+    } else {
+        $movie = $movieDao->findById($id);
+        //Verifica se o filme existe
+        if (!$movie) {
+            $message->setMessage("O filme não foi encontrado!", "error", "index.php");
+        }
     }
-}
+
+    //Checar se o filme tem alguma imagem 
+    if($movie->image == ""){
+        $movie->image = "movie_cover.jpg";
+    }
 ?>
 <div id="main-container" class="container-fluid">
     <div class="col-md-12">
@@ -28,10 +33,11 @@ if (empty($id)) {
                 <h1><?= $movie->title ?></h1>
                 <p class="page-description">Altere os dados do filme no formulário abaixo:</p>
                 <form id="edit-movie-form" action="<?= $BASE_URL ?>movie_process.php" method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="type" value="create">
+                    <input type="hidden" name="type" value="update">
+                    <input type="hidden" name="id" value="<?= $movie->id ?>">
                     <div class="form-group">
                         <label for="title">Título:</label>
-                        <input type="text" class="form-control" id="title" name="title" placeholder="Digite o nome do filme que quer adicionar">
+                        <input type="text" class="form-control" id="title" name="title" placeholder="Digite o nome do filme que quer adicionar" value="<?= $movie->title ?>">
                     </div>
                     <div class="form-group">
                         <label for="image">Imagem do Filme:</label>
@@ -39,37 +45,40 @@ if (empty($id)) {
                     </div>
                     <div class="form-group">
                         <label for="length">Duração:</label>
-                        <input type="text" class="form-control" id="length" name="length" placeholder="Digite a duração do filme">
+                        <input type="text" class="form-control" id="length" name="length" placeholder="Digite a duração do filme" value="<?= $movie->length ?>">
                     </div>
                     <div class="form-group">
                         <label for="category">Categoria:</label>
                         <select name="category" id="category" class="form-control">
                             <option value="">Selecione</option>
-                            <option value="Ação">Ação</option>
-                            <option value="Aventura">Aventura</option>
-                            <option value="Suspense">Suspense</option>
-                            <option value="Terror">Terror</option>
-                            <option value="Romance">Romance</option>
-                            <option value="Animação">Animação</option>
-                            <option value="Comédia">Comédia</option>
-                            <option value="Drama">Drama</option>
-                            <option value="Ficção científica">Ficção científica</option>
+                            <option value="Ação" <?= $movie->category === "Ação" ? "selected" : "" ?>>Ação</option>
+                            <option value="Aventura"<?= $movie->category === "Aventura" ? "selected" : "" ?>>Aventura</option>
+                            <option value="Suspense" <?= $movie->category === "Suspense" ? "selected" : "" ?>>Suspense</option>
+                            <option value="Terror" <?= $movie->category === "Terror" ? "selected" : "" ?>>Terror</option>
+                            <option value="Romance" <?= $movie->category === "Romance" ? "selected" : "" ?>>Romance</option>
+                            <option value="Animação" <?= $movie->category === "Animação" ? "selected" : "" ?>>Animação</option>
+                            <option value="Comédia" <?= $movie->category === "Comédia" ? "selected" : "" ?>>Comédia</option>
+                            <option value="Drama" <?= $movie->category === "Drama" ? "selected" : "" ?>>Drama</option>
+                            <option value="Ficção científica" <?= $movie->category === "Ficção científica" ? "selected" : "" ?>>Ficção científica</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="trailer">Trailer do filme:</label>
-                        <input type="text" class="form-control" name="trailer" id="trailer" placeholder="Insira o link do trailer">
+                        <input type="text" class="form-control" name="trailer" id="trailer" placeholder="Insira o link do trailer" value="<?= $movie->trailer ?>">
                     </div>
                     <div class="form-group">
                         <label for="description">Descrição do filme:</label>
-                        <textarea name="description" id="description" rows="5" class="form-control" placeholder="Descreva o filme..."></textarea>
+                        <textarea name="description" id="description" rows="5" class="form-control" placeholder="Descreva o filme..." ><?= $movie->description ?></textarea>
                     </div>
-                    <input type="submit" class="btn card-btn" value="Adicionar filme">
+                    <input type="submit" class="btn card-btn" value="Editar filme">
                 </form>
+            </div>
+            <div class="col-md-3">
+                <div class="movie-image-container" style="background-image: url('<?= $BASE_URL ?>img/movies/<?= $movie->image ?>')"></div>
             </div>
         </div>
     </div>
 </div>
 <?php
-require_once("templates/footer.php");
+    require_once("templates/footer.php");
 ?>
