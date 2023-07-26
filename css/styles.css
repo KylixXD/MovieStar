@@ -157,6 +157,20 @@
     border-color: #444;
 }
 
+.edit-profile-btn {
+    margin-bottom: 15px;
+    color: #F5C518;
+    background-color: #333;
+    border-color: #333;
+    width: 15%;
+    font-weight: bold;
+}
+
+.edit-profile-btn:hover {
+    background-color: #444;
+    border-color: #444;
+}
+
 .empty-list {
     text-align: center;
     font-size: 18px;

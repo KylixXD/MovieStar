@@ -44,6 +44,7 @@
                 <div class="col-md-12 about-container"
                     <h1 class="page-title"><?= $fullName ?></h1>
                     <div id="profile-image-container" class="profile-image" style="background-image: url('<?= $BASE_URL ?>img/users/<?= $userData->image ?>')"></div>
+                    <a href="<?= $BASE_URL ?>editprofile.php" id="edit-profile-button"class="btn btn-primary edit-profile-btn">Editar perfil</a>
                     <h3 class="about-title">Sobre:</h3>
                     <?php if(!empty($userData->bio)):?>
                         <p class="profile-description"><?= $userData->bio ?></p>

@@ -60,7 +60,7 @@
                         <a href="<?= $BASE_URL ?>dashboard.php" class="nav-link">Meus Filmes</a>
                     </li>
                     <li class="nav-item">
-                        <a href="<?= $BASE_URL ?>editprofile.php" class="nav-link" bold>
+                        <a href="<?= $BASE_URL ?>profile.php" class="nav-link" bold>
                             <?= $userData->name ?>
                         </a>
                     </li>
