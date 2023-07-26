@@ -30,11 +30,20 @@
         if($userData->id === $movie->users_id){
             $userOwnsMovie = true;
         }
+        $alreadyReviewed = $reviewDao->hasAlreadyReviewed($id, $userData->id);
     }
     
     //Resgatar as reviews do filme
     $moviesReviews = $reviewDao->getMoviesReview($id); 
-    $alreadyReviewed = false;
+
+    // $numberFormat = number_format($movie->rating, 1);
+    
+    // //Mostrar o número com virgula de uma maneira mais "bonita"
+    // if(is_float($numberFormat) or is_int($numberFormat)){
+    //     return $numberFormat;
+    // } else {
+    //     return $movie->rating;
+    // }
     
 
 ?>
@@ -47,7 +56,7 @@
                 <span class="pipe"></span>
                 <span><?= $movie->category ?></span>
                 <span class="pipe"></span>
-                <span><i class="fas fa-star"></i> 9 </span>
+                <span><i class="fas fa-star"></i><?= $movie->rating ?></span>
             </p>
             <iframe src="<?= $movie->trailer ?>" width="560" height="315" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encryted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>
             <p><?= $movie->description ?></p>

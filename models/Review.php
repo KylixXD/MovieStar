@@ -6,6 +6,7 @@
         public $review;
         public $users_id;
         public $movies_id;
+        public $user;
     }
 
     interface ReviewDAOInterface {

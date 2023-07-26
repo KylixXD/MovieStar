@@ -1,6 +1,6 @@
 <?php 
-    require_once("models/Message.php");
     require_once("models/Review.php");
+    require_once("models/Message.php");
     require_once("dao/UserDAO.php");
 
     class ReviewDAO implements ReviewDAOInterface {
@@ -51,9 +51,16 @@
 
             if($stmt->rowCount() > 0){
                 $reviewsData = $stmt->fetchAll();
+                $userDao = new UserDao($this->conn , $this->url);
 
                 foreach($reviewsData as $review){
-                    $reviews[] = $this->buildReview($review);
+                    $reviewObject = $this->buildReview($review);
+                    //Chamar dados do usuário
+                    $user = $userDao->findById($reviewObject->users_id);
+
+                    $reviewObject->user = $user;
+
+                    $reviews[] = $reviewObject;
                 }
             }
 
@@ -62,11 +69,40 @@
         }
 
         public function hasAlreadyReviewed($id, $userId){
+            $stmt = $this->conn->prepare("SELECT * FROM reviews WHERE movies_id = :movies_id AND users_id = :users_id");
+            $stmt->bindParam(":movies_id",$id);
+            $stmt->bindParam(":users_id",$userId);
+            $stmt->execute();
+
+            if($stmt->rowCount() > 0 ){
+                return true;
+            } else {
+                return false;
+            }
+
 
         }
 
         public function getRatings($id){
+            $stmt = $this->conn->prepare("SELECT * FROM reviews WHERE movies_id = :movies_id");
+            $stmt->bindParam(":movies_id",$id);
+            $stmt->execute();
 
+            if($stmt->rowCount() > 0 ){
+                $rating = 0;
+                $reviews = $stmt->fetchAll();
+                
+                foreach($reviews as $review){
+                    $rating += $review["rating"];
+                }   
+                
+                $rating = $rating / count($reviews);
+
+            } else {
+                $rating = "Não avaliado ainda";
+            }
+
+            return $rating;
         }
 
     }
